@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 enum ViewState { initial, loading, error, loaded, empty }
 
 extension ViewStateExtension on ViewState {
@@ -12,12 +14,12 @@ extension ViewStateExtension on ViewState {
   bool get isEmpty => this == ViewState.empty;
 }
 
-class ResultData<T> {
-  ViewState status;
-  T? data;
-  String message;
+class ResultData<T> extends Equatable {
+  final ViewState status;
+  final T? data;
+  final String message;
 
-  ResultData._({
+  const ResultData._({
     required this.status,
     this.data,
     this.message = "",
@@ -36,10 +38,13 @@ class ResultData<T> {
   }
 
   factory ResultData.initial() {
-    return ResultData._(status: ViewState.initial);
+    return const ResultData._(status: ViewState.initial);
   }
 
   factory ResultData.empty({required String message}) {
     return ResultData._(status: ViewState.empty, message: message);
   }
+
+  @override
+  List<Object?> get props => [status, data, message];
 }
